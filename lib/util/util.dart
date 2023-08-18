@@ -30,7 +30,7 @@ class Dialogos {
     required BuildContext context,
     DialogType dgt = DialogType.success,
     required String texto,
-    String onOkText = 'si',
+    String onOkText = 'Si',
     required Function() onOkPress,
     String onCancelText = 'Cancelar',
     required Function() onCancelPress,

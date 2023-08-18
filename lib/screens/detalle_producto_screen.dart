@@ -72,55 +72,63 @@ class DetalleProductoScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: MaterialButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            disabledColor: Colors.grey,
-            color: AppTheme.red,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 12,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: const Text(
-                'Eliminar',
-                style: TextStyle(color: Colors.white),
+              disabledColor: Colors.grey,
+              color: AppTheme.red,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                child: const Text(
+                  'Eliminar',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-            onPressed: () async {
-              bool res = await productoProvider.eliminarProducto(
-                idProducto: idProducto,
-                idUsuario: idUsuario,
-              );
-              if (res == false) {
-                Dialogos.msgDialog(
-                        context: context,
-                        color: const Color.fromARGB(255, 206, 66, 56),
-                        texto: 'Datos Incorrectos, intenta de nuevo',
-                        dgt: DialogType.error,
-                        onPress: () {
-                          //Navigator.pushNamed(context, '/');
-                        })
-                    .show();
-              } else {
-                Dialogos.msgDialog(
+              onPressed: () async {
+                Dialogos.msgDialogCOpt(
                     context: context,
-                    texto: 'Producto Eliminado',
-                    dgt: DialogType.success,
-                    onPress: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => MainScreen(
-                            usuario: usuario,
-                          ),
-                        ),
-                        (Route<dynamic> route) => false,
+                    texto: '¿Seguro que deseas dar de baja este producto?',
+                    dgt: DialogType.question,
+                    onCancelPress: () {
+                      Navigator.pop(context);
+                    },
+                    onOkPress: () async {
+                      bool res = await productoProvider.eliminarProducto(
+                        idProducto: idProducto,
+                        idUsuario: idUsuario,
                       );
+                      if (res == false) {
+                        Dialogos.msgDialog(
+                                context: context,
+                                color: const Color.fromARGB(255, 206, 66, 56),
+                                texto: 'Datos Incorrectos, intenta de nuevo',
+                                dgt: DialogType.error,
+                                onPress: () {
+                                  //Navigator.pushNamed(context, '/');
+                                })
+                            .show();
+                      } else {
+                        Dialogos.msgDialog(
+                            context: context,
+                            texto: 'Producto Eliminado',
+                            dgt: DialogType.success,
+                            onPress: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => MainScreen(
+                                    usuario: usuario,
+                                  ),
+                                ),
+                                (Route<dynamic> route) => false,
+                              );
+                            }).show();
+                      }
                     }).show();
-              }
-            },
-          ),
+              }),
         ),
       ),
     );
